@@ -8,12 +8,18 @@ namespace WpfApp
 {
     public partial class App : Application
     {
-        private async void OnStartup(object sender, StartupEventArgs e) =>
+        private async void OnStartup(object sender, StartupEventArgs e)
+        {
             await CreateHostBuilder(e.Args).Build().RunAsync();
+        }
 
-        private void OnExit(object sender, ExitEventArgs e) { }
+        private void OnExit(object sender, ExitEventArgs e)
+        {
+        }
 
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) { }
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+        }
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
