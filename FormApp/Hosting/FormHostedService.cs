@@ -8,24 +8,29 @@ using System.Windows.Forms;
 
 namespace FormApp.Hosting
 {
-    public class FormHostedService<TForm> : IHostedService, IDisposable where TForm : Form
+    public class FormHostedService<MainWindoww> : IHostedService, IDisposable where MainWindoww : Form
     {
-        private readonly ILogger<FormHostedService<TForm>> logger;
+        private readonly ILogger<FormHostedService<MainWindoww>> logger;
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
         private readonly IServiceProvider serviceProvider;
 
-        public FormHostedService(ILogger<FormHostedService<TForm>> logger,
+        public FormHostedService(ILogger<FormHostedService<MainWindoww>> logger,
+                                 IHostApplicationLifetime hostApplicationLifetime,
                                  IServiceProvider serviceProvider)
         {
             this.logger = logger;
+            this.hostApplicationLifetime = hostApplicationLifetime;
             this.serviceProvider = serviceProvider;
             logger.LogDebug("Created: " + GetHashCode().ToString());
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var shell = serviceProvider.GetService<TForm>();
-            Application.Run(shell);
+            Application.ApplicationExit += Application_ApplicationExit;
             logger.LogDebug("StartAsync: " + GetHashCode().ToString());
+            ApplicationConfiguration.Initialize();
+            var shell = serviceProvider.GetService<MainWindoww>();
+            Application.Run(shell);
             return Task.CompletedTask;
         }
 
@@ -33,6 +38,12 @@ namespace FormApp.Hosting
         {
             logger.LogDebug("StopAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
+        }
+
+        private void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            Application.ApplicationExit -= Application_ApplicationExit;
+            hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()

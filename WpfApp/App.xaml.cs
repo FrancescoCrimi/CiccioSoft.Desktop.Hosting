@@ -13,17 +13,13 @@ namespace WpfApp
             await CreateHostBuilder(e.Args).Build().RunAsync();
         }
 
-        private void OnExit(object sender, ExitEventArgs e)
-        {
-        }
-
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
         }
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .ConfigureWPF<MainWindow>()
+            .ConfigureWpfHost<MainWindow>()
             .ConfigureServices(ConfigureServices);
 
         private void ConfigureServices(HostBuilderContext hostBuilderContext,

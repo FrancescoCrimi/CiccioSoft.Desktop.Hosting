@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace WpfApp.Hosting
 {
-    public class WpfAppLifetime : IHostLifetime, IDisposable
+    public class WpfHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly ILogger<WpfAppLifetime> logger;
-        private readonly IHostApplicationLifetime hostApplicationLifetime;
+        private readonly ILogger<WpfHostLifetime> logger;
 
-        public WpfAppLifetime(ILogger<WpfAppLifetime> logger,
-                              IHostApplicationLifetime hostApplicationLifetime)
+        public WpfHostLifetime(ILogger<WpfHostLifetime> logger)
         {
             this.logger = logger;
-            this.hostApplicationLifetime = hostApplicationLifetime;
             logger.LogDebug("Created: " + GetHashCode().ToString());
         }
 
@@ -27,15 +24,8 @@ namespace WpfApp.Hosting
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
-            App.Current.Exit += ApplicationExit;
             logger.LogDebug("WaitForStartAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
-        }
-
-        private void ApplicationExit(object sender, System.Windows.ExitEventArgs e)
-        {
-            App.Current.Exit -= ApplicationExit;
-            hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()

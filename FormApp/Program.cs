@@ -14,8 +14,8 @@ namespace FormApp
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWinForms<MainWindow>()
-                .ConfigureServices(ConfigureServices);
+                .ConfigureServices(ConfigureServices)
+                .ConfigureFormHost<MainWindow>();
 
         private static void ConfigureServices(HostBuilderContext hostBuilderContext,
                                               IServiceCollection serviceCollection) => 

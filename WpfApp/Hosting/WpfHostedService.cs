@@ -4,25 +4,30 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfApp.Hosting
 {
-    class WpfAppHostedService<TWindow> : IHostedService, IDisposable where TWindow : System.Windows.Window
+    class WpfHostedService<MainWindoww> : IHostedService, IDisposable where MainWindoww : System.Windows.Window
     {
-        private readonly ILogger<WpfAppHostedService<TWindow>> logger;
+        private readonly ILogger<WpfHostedService<MainWindoww>> logger;
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
         private readonly IServiceProvider serviceProvider;
 
-        public WpfAppHostedService(ILogger<WpfAppHostedService<TWindow>> logger,
-                                   IServiceProvider serviceProvider)
+        public WpfHostedService(ILogger<WpfHostedService<MainWindoww>> logger,
+                                IHostApplicationLifetime hostApplicationLifetime,
+                                IServiceProvider serviceProvider)
         {
             this.logger = logger;
+            this.hostApplicationLifetime = hostApplicationLifetime;
             this.serviceProvider = serviceProvider;
             logger.LogDebug("Created: " + GetHashCode().ToString());
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            serviceProvider.GetService<TWindow>().Show();
+            App.Current.Exit += ApplicationExit;
+            serviceProvider.GetService<MainWindoww>().Show();
             logger.LogDebug("StartAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
         }
@@ -31,6 +36,12 @@ namespace WpfApp.Hosting
         {
             logger.LogDebug("StopAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
+        }
+
+        private void ApplicationExit(object sender, ExitEventArgs e)
+        {
+            App.Current.Exit -= ApplicationExit;
+            hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()
