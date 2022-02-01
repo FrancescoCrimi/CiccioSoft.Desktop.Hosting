@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
-using System.Windows.Threading;
 using WpfApp.Hosting;
 
 namespace WpfApp
@@ -13,18 +12,18 @@ namespace WpfApp
             await CreateHostBuilder(e.Args).Build().RunAsync();
         }
 
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private IHostBuilder CreateHostBuilder(string[] args)
         {
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureServices(ConfigureServices)
+                .ConfigureWpfHost<MainWindow>();
         }
 
-        private IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-            .ConfigureWpfHost<MainWindow>()
-            .ConfigureServices(ConfigureServices);
-
         private void ConfigureServices(HostBuilderContext hostBuilderContext,
-                                       IServiceCollection serviceCollection) =>
+                                       IServiceCollection serviceCollection)
+        {
             serviceCollection
                 .AddTransient<MainWindow>();
+        }
     }
 }

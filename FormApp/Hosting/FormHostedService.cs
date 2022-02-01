@@ -11,39 +11,28 @@ namespace FormApp.Hosting
     public class FormHostedService<MainWindoww> : IHostedService, IDisposable where MainWindoww : Form
     {
         private readonly ILogger<FormHostedService<MainWindoww>> logger;
-        private readonly IHostApplicationLifetime hostApplicationLifetime;
         private readonly IServiceProvider serviceProvider;
 
         public FormHostedService(ILogger<FormHostedService<MainWindoww>> logger,
-                                 IHostApplicationLifetime hostApplicationLifetime,
                                  IServiceProvider serviceProvider)
         {
             this.logger = logger;
-            this.hostApplicationLifetime = hostApplicationLifetime;
             this.serviceProvider = serviceProvider;
             logger.LogDebug("Created: " + GetHashCode().ToString());
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Application.ApplicationExit += Application_ApplicationExit;
             logger.LogDebug("StartAsync: " + GetHashCode().ToString());
             ApplicationConfiguration.Initialize();
             var shell = serviceProvider.GetService<MainWindoww>();
-            Application.Run(shell);
-            return Task.CompletedTask;
+            return Task.Run(()=> Application.Run(shell));
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogDebug("StopAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
-        }
-
-        private void Application_ApplicationExit(object sender, EventArgs e)
-        {
-            Application.ApplicationExit -= Application_ApplicationExit;
-            hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()

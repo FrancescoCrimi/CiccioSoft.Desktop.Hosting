@@ -3,16 +3,20 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FormApp.Hosting
 {
     public class FormHostLifetime : IHostLifetime, IDisposable
     {
         private readonly ILogger<FormHostLifetime> logger;
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
 
-        public FormHostLifetime(ILogger<FormHostLifetime> logger)
+        public FormHostLifetime(ILogger<FormHostLifetime> logger,
+                                IHostApplicationLifetime hostApplicationLifetime)
         {
             this.logger = logger;
+            this.hostApplicationLifetime = hostApplicationLifetime;
             logger.LogDebug("Created: " + GetHashCode().ToString());
         }
 
@@ -24,8 +28,15 @@ namespace FormApp.Hosting
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
+            Application.ApplicationExit += Application_ApplicationExit;
             logger.LogDebug("WaitForStartAsync: " + GetHashCode().ToString());
             return Task.CompletedTask;
+        }
+
+        private void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            Application.ApplicationExit -= Application_ApplicationExit;
+            hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()

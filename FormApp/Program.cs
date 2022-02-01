@@ -9,17 +9,23 @@ namespace FormApp
     public static class Program
     {
         [STAThread]
-        public static async Task Main(string[] args) =>
+        public static async Task Main(string[] args)
+        {
             await CreateHostBuilder(args).Build().RunAsync();
+        }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices)
                 .ConfigureFormHost<MainWindow>();
+        }
 
         private static void ConfigureServices(HostBuilderContext hostBuilderContext,
-                                              IServiceCollection serviceCollection) => 
+                                              IServiceCollection serviceCollection)
+        {
             serviceCollection
                 .AddSingleton<MainWindow>();
+        }
     }
 }
