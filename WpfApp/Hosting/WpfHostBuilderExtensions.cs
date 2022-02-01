@@ -6,12 +6,12 @@ namespace WpfApp.Hosting
 {
     public static class WpfHostBuilderExtensions
     {
-        public static IHostBuilder ConfigureWpfHost<MainWindoww>(this IHostBuilder hostBuilder) where MainWindoww : Window
+        public static IHostBuilder ConfigureWpfHost<MainWindow>(this IHostBuilder hostBuilder) where MainWindow : Window
         {
             return hostBuilder
                 .ConfigureServices((hostBuilderContext, serviceCollection) => serviceCollection
                     .AddSingleton<IHostLifetime, WpfHostLifetime>()
-                    .AddHostedService<WpfHostedService<MainWindoww>>());
+                    .AddHostedService<WpfHostedService<MainWindow>>());
         }
     }
 }

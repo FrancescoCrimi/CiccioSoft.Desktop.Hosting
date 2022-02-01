@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace WpfApp.Hosting
 {
-    class WpfHostedService<MainWindoww> : IHostedService, IDisposable where MainWindoww : System.Windows.Window
+    class WpfHostedService<MainWindow> : IHostedService, IDisposable where MainWindow : System.Windows.Window
     {
-        private readonly ILogger<WpfHostedService<MainWindoww>> logger;
+        private readonly ILogger<WpfHostedService<MainWindow>> logger;
         private readonly IServiceProvider serviceProvider;
 
-        public WpfHostedService(ILogger<WpfHostedService<MainWindoww>> logger,
+        public WpfHostedService(ILogger<WpfHostedService<MainWindow>> logger,
                                 IServiceProvider serviceProvider)
         {
             this.logger = logger;
@@ -23,7 +23,7 @@ namespace WpfApp.Hosting
         public Task StartAsync(CancellationToken cancellationToken)
         {
             logger.LogDebug("StartAsync: " + GetHashCode().ToString());
-            var shell = serviceProvider.GetService<MainWindoww>();
+            var shell = serviceProvider.GetService<MainWindow>();
             shell.Show();
             return Task.CompletedTask;
         }

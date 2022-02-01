@@ -8,12 +8,12 @@ using System.Windows.Forms;
 
 namespace FormApp.Hosting
 {
-    public class FormHostedService<MainWindoww> : IHostedService, IDisposable where MainWindoww : Form
+    public class FormHostedService<MainWindow> : IHostedService, IDisposable where MainWindow : Form
     {
-        private readonly ILogger<FormHostedService<MainWindoww>> logger;
+        private readonly ILogger<FormHostedService<MainWindow>> logger;
         private readonly IServiceProvider serviceProvider;
 
-        public FormHostedService(ILogger<FormHostedService<MainWindoww>> logger,
+        public FormHostedService(ILogger<FormHostedService<MainWindow>> logger,
                                  IServiceProvider serviceProvider)
         {
             this.logger = logger;
@@ -25,7 +25,7 @@ namespace FormApp.Hosting
         {
             logger.LogDebug("StartAsync: " + GetHashCode().ToString());
             ApplicationConfiguration.Initialize();
-            var shell = serviceProvider.GetService<MainWindoww>();
+            var shell = serviceProvider.GetService<MainWindow>();
             return Task.Run(()=> Application.Run(shell));
         }
 

@@ -6,12 +6,12 @@ namespace FormApp.Hosting
 {
     public static class FormHostBuilderExtensions
     {
-        public static IHostBuilder ConfigureFormHost<MainWindoww>(this IHostBuilder hostBuilder) where MainWindoww : Form
+        public static IHostBuilder ConfigureFormHost<MainWindow>(this IHostBuilder hostBuilder) where MainWindow : Form
         {
             return hostBuilder
                 .ConfigureServices((hostBuilderContext, serviceCollection) => serviceCollection
                     .AddSingleton<IHostLifetime, FormHostLifetime>()
-                    .AddHostedService<FormHostedService<MainWindoww>>());
+                    .AddHostedService<FormHostedService<MainWindow>>());
         }
     }
 }
