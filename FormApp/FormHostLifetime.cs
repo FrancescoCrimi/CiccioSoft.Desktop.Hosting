@@ -43,15 +43,15 @@ namespace FormApp
 
             RegisterShutdownHandlers();
 
-            var threadfrm = new System.Threading.Thread(Suca);
+            var threadfrm = new System.Threading.Thread(StartForm);
             threadfrm.SetApartmentState(System.Threading.ApartmentState.STA);
-            threadfrm.Name = "Suca Thread";
+            threadfrm.Name = "StartForm Thread";
             threadfrm.Start();
 
             return Task.CompletedTask;
         }
 
-        private void Suca()
+        private void StartForm()
         {
             ApplicationConfiguration.Initialize();
             var shell = serviceProvider.GetService<MainWindow>();
