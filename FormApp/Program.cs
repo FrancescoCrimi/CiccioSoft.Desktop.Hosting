@@ -2,25 +2,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FormApp
 {
     public static class Program
     {
-        [STAThread]
-        public static async Task Main(string[] args)
+        static async Task Main(string[] args)
         {
-            ApplicationConfiguration.Initialize();
-            await CreateHostBuilder(args).Build().RunAsync();
+            var host = CreateHostBuilder(args);
+            await host.StartAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices(serviceCollection =>
-                {            
-                    serviceCollection                
-                    .AddSingleton<IHostLifetime, FormHostLifetime>()                
+                {
+                    serviceCollection
+                    .AddSingleton<IHostLifetime, FormHostLifetime>()
                     .AddSingleton<MainWindow>();
                 });
         }
