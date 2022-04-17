@@ -51,17 +51,9 @@ namespace FormApp
             return Task.CompletedTask;
         }
 
-        private void StartForm()
+        public Task StopAsync(CancellationToken cancellationToken)
         {
-            ApplicationConfiguration.Initialize();
-            var shell = serviceProvider.GetService<MainWindow>();
-            Application.Run(shell);
-        }
-
-        private void RegisterShutdownHandlers()
-        {
-            //AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
-            Application.ApplicationExit += OnProcessExit;
+            return Task.CompletedTask;
         }
 
         private void OnApplicationStarted()
@@ -76,15 +68,17 @@ namespace FormApp
             logger.LogInformation("Application is shutting down...");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        private void RegisterShutdownHandlers()
         {
-            return Task.CompletedTask;
+            //AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
+            Application.ApplicationExit += OnProcessExit;
         }
 
-        private void UnregisterShutdownHandlers()
+        private void StartForm()
         {
-            //AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
-            Application.ApplicationExit -= OnProcessExit;
+            ApplicationConfiguration.Initialize();
+            var shell = serviceProvider.GetService<MainWindow>();
+            Application.Run(shell);
         }
 
         private void OnProcessExit(object? sender, EventArgs e)
@@ -93,6 +87,12 @@ namespace FormApp
             UnregisterShutdownHandlers();
             _applicationStartedRegistration.Dispose();
             _applicationStoppingRegistration.Dispose();
+        }
+
+        private void UnregisterShutdownHandlers()
+        {
+            //AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
+            Application.ApplicationExit -= OnProcessExit;
         }
 
         public void Dispose()
