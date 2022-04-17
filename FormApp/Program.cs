@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FormApp
 {
@@ -10,8 +9,7 @@ namespace FormApp
     {
         static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args);
-            await host.StartAsync();
+            await CreateHostBuilder(args).StartAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
