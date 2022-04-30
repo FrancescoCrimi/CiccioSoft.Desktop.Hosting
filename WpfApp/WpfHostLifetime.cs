@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 namespace WpfApp{
     public class WpfHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger logger;
         private readonly IHostEnvironment environment;
         private readonly IHostApplicationLifetime applicationLifetime;
-        private readonly ILogger logger;
+        private readonly IServiceProvider serviceProvider;
         private CancellationTokenRegistration applicationStartedRegistration;
         private CancellationTokenRegistration applicationStoppingRegistration;
 
-        public WpfHostLifetime(IServiceProvider serviceProvider,
+        public WpfHostLifetime(ILoggerFactory loggerFactory,
                                IHostEnvironment environment,
                                IHostApplicationLifetime applicationLifetime,
-                               ILoggerFactory loggerFactory)
+                               IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+            logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
             this.environment = environment;
             this.applicationLifetime = applicationLifetime;
-            logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
+            this.serviceProvider = serviceProvider;
         }
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
@@ -52,12 +52,6 @@ namespace WpfApp{
             return Task.CompletedTask;
         }
 
-        private void RegisterShutdownHandlers()
-        {
-            //App.Current.Exit += OnProcessExit;
-            AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
-        }
-
         private void OnApplicationStarted()
         {
             logger.LogInformation("Application started.");
@@ -70,10 +64,10 @@ namespace WpfApp{
             logger.LogInformation("Application is shutting down...");
         }
 
-        private void UnregisterShutdownHandlers()
+        private void RegisterShutdownHandlers()
         {
-            //App.Current.Exit -= OnProcessExit;
-            AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
+            //App.Current.Exit += OnProcessExit;
+            AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
         }
 
         private void OnProcessExit(object? sender, EventArgs e)
@@ -82,6 +76,12 @@ namespace WpfApp{
             UnregisterShutdownHandlers();
             applicationStartedRegistration.Dispose();
             applicationStoppingRegistration.Dispose();
+        }
+
+        private void UnregisterShutdownHandlers()
+        {
+            //App.Current.Exit -= OnProcessExit;
+            AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
         }
 
         public void Dispose()

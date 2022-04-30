@@ -10,17 +10,17 @@ namespace FormApp
 {
     public class FormHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger logger;
         private readonly IHostEnvironment environment;
         private readonly IHostApplicationLifetime applicationLifetime;
-        private readonly ILogger logger;
-        private CancellationTokenRegistration _applicationStartedRegistration;
-        private CancellationTokenRegistration _applicationStoppingRegistration;
+        private readonly IServiceProvider serviceProvider;
+        private CancellationTokenRegistration applicationStartedRegistration;
+        private CancellationTokenRegistration applicationStoppingRegistration;
 
-        public FormHostLifetime(IServiceProvider serviceProvider,
+        public FormHostLifetime(ILoggerFactory loggerFactory,
                                 IHostEnvironment environment,
                                 IHostApplicationLifetime applicationLifetime,
-                                ILoggerFactory loggerFactory)
+                                IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
             this.environment = environment;
@@ -30,12 +30,12 @@ namespace FormApp
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
-            _applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
+            applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
             {
                 ((FormHostLifetime)state!).OnApplicationStarted();
             },
             this);
-            _applicationStoppingRegistration = applicationLifetime.ApplicationStopping.Register(state =>
+            applicationStoppingRegistration = applicationLifetime.ApplicationStopping.Register(state =>
             {
                 ((FormHostLifetime)state!).OnApplicationStopping();
             },
@@ -85,8 +85,8 @@ namespace FormApp
         {
             applicationLifetime.StopApplication();
             UnregisterShutdownHandlers();
-            _applicationStartedRegistration.Dispose();
-            _applicationStoppingRegistration.Dispose();
+            applicationStartedRegistration.Dispose();
+            applicationStoppingRegistration.Dispose();
         }
 
         private void UnregisterShutdownHandlers()
