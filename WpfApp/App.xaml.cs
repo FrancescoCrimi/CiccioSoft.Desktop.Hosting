@@ -9,7 +9,7 @@ namespace WpfApp
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            await CreateHostBuilder(e.Args).Build().RunAsync();
+            await CreateHostBuilder(e.Args).StartAsync();
         }
 
         private IHostBuilder CreateHostBuilder(string[] args)
