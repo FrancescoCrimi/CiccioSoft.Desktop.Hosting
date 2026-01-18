@@ -15,7 +15,7 @@ namespace FormsApp2.Hosting
 {
     public class FormHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly ILogger<FormHostLifetime> _logger;
+        private readonly ILogger _logger;
         private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
         public FormHostLifetime(ILogger<FormHostLifetime> logger,

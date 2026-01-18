@@ -16,20 +16,20 @@ namespace WpfApp2.Hosting
 {
     public class WpfAppHostedService<TWindow> : IHostedService, IDisposable where TWindow : Window
     {
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
         private readonly IServiceProvider _serviceProvider;
 
         public WpfAppHostedService(ILogger<WpfAppHostedService<TWindow>> logger,
                                    IServiceProvider serviceProvider)
         {
-            this.logger = logger;
+            _logger = logger;
             _serviceProvider = serviceProvider;
-            logger.LogDebug("Created: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("Created: {HashCode}", GetHashCode().ToString());
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogDebug("StartAsync: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("StartAsync: {HashCode}", GetHashCode().ToString());
             var shellWindow = _serviceProvider.GetService<TWindow>();
             shellWindow?.Show();
             await Task.CompletedTask;
@@ -37,13 +37,13 @@ namespace WpfApp2.Hosting
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            logger.LogDebug("StopAsync: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("StopAsync: {HashCode}", GetHashCode().ToString());
             await Task.CompletedTask;
         }
 
         public void Dispose()
         {
-            logger.LogDebug("Disposed: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("Disposed: {HashCode}", GetHashCode().ToString());
         }
     }
 }

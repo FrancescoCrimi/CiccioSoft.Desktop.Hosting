@@ -16,10 +16,10 @@ namespace FormApp
 {
     public class FormHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly ILogger logger;
-        private readonly IHostEnvironment environment;
-        private readonly IHostApplicationLifetime applicationLifetime;
-        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger _logger;
+        private readonly IHostEnvironment _environment;
+        private readonly IHostApplicationLifetime _applicationLifetime;
+        private readonly IServiceProvider _serviceProvider;
         private CancellationTokenRegistration applicationStartedRegistration;
         private CancellationTokenRegistration applicationStoppingRegistration;
 
@@ -28,20 +28,20 @@ namespace FormApp
                                 IHostApplicationLifetime applicationLifetime,
                                 IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
-            this.environment = environment;
-            this.applicationLifetime = applicationLifetime;
-            logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
+            _logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
+            _environment = environment;
+            _applicationLifetime = applicationLifetime;
+            _serviceProvider = serviceProvider;
         }
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
-            applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
+            applicationStartedRegistration = _applicationLifetime.ApplicationStarted.Register(state =>
             {
                 ((FormHostLifetime)state!).OnApplicationStarted();
             },
             this);
-            applicationStoppingRegistration = applicationLifetime.ApplicationStopping.Register(state =>
+            applicationStoppingRegistration = _applicationLifetime.ApplicationStopping.Register(state =>
             {
                 ((FormHostLifetime)state!).OnApplicationStopping();
             },
@@ -64,14 +64,14 @@ namespace FormApp
 
         private void OnApplicationStarted()
         {
-            logger.LogInformation("Application started.");
-            logger.LogInformation("Hosting environment: {envName}", environment.EnvironmentName);
-            logger.LogInformation("Content root path: {contentRoot}", environment.ContentRootPath);
+            _logger.LogInformation("Application started.");
+            _logger.LogInformation("Hosting environment: {envName}", _environment.EnvironmentName);
+            _logger.LogInformation("Content root path: {contentRoot}", _environment.ContentRootPath);
         }
 
         private void OnApplicationStopping()
         {
-            logger.LogInformation("Application is shutting down...");
+            _logger.LogInformation("Application is shutting down...");
         }
 
         private void RegisterShutdownHandlers()
@@ -83,13 +83,13 @@ namespace FormApp
         private void StartForm()
         {
             ApplicationConfiguration.Initialize();
-            var shell = serviceProvider.GetService<MainWindow>();
+            var shell = _serviceProvider.GetService<MainWindow>();
             Application.Run(shell);
         }
 
         private void OnProcessExit(object? sender, EventArgs e)
         {
-            applicationLifetime.StopApplication();
+            _applicationLifetime.StopApplication();
             UnregisterShutdownHandlers();
             applicationStartedRegistration.Dispose();
             applicationStoppingRegistration.Dispose();

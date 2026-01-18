@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 namespace WpfApp{
     public class WpfHostLifetime : IHostLifetime, IDisposable
     {
-        private readonly ILogger logger;
-        private readonly IHostEnvironment environment;
-        private readonly IHostApplicationLifetime applicationLifetime;
-        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger _logger;
+        private readonly IHostEnvironment _environment;
+        private readonly IHostApplicationLifetime _applicationLifetime;
+        private readonly IServiceProvider _serviceProvider;
         private CancellationTokenRegistration applicationStartedRegistration;
         private CancellationTokenRegistration applicationStoppingRegistration;
 
@@ -26,20 +26,20 @@ namespace WpfApp{
                                IHostApplicationLifetime applicationLifetime,
                                IServiceProvider serviceProvider)
         {
-            logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
-            this.environment = environment;
-            this.applicationLifetime = applicationLifetime;
-            this.serviceProvider = serviceProvider;
+            _logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
+            _environment = environment;
+            _applicationLifetime = applicationLifetime;
+            _serviceProvider = serviceProvider;
         }
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
-            applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
+            applicationStartedRegistration = _applicationLifetime.ApplicationStarted.Register(state =>
             {
                 ((WpfHostLifetime)state!).OnApplicationStarted();
             },
             this);
-            applicationStoppingRegistration = applicationLifetime.ApplicationStopping.Register(state =>
+            applicationStoppingRegistration = _applicationLifetime.ApplicationStopping.Register(state =>
             {
                 ((WpfHostLifetime)state!).OnApplicationStopping();
             },
@@ -47,7 +47,7 @@ namespace WpfApp{
 
             RegisterShutdownHandlers();
 
-            var shell = serviceProvider.GetRequiredService<MainWindow>();
+            var shell = _serviceProvider.GetRequiredService<MainWindow>();
             shell.Show();
 
             return Task.CompletedTask;
@@ -60,14 +60,14 @@ namespace WpfApp{
 
         private void OnApplicationStarted()
         {
-            logger.LogInformation("Application started.");
-            logger.LogInformation("Hosting environment: {envName}", environment.EnvironmentName);
-            logger.LogInformation("Content root path: {contentRoot}", environment.ContentRootPath);
+            _logger.LogInformation("Application started.");
+            _logger.LogInformation("Hosting environment: {envName}", _environment.EnvironmentName);
+            _logger.LogInformation("Content root path: {contentRoot}", _environment.ContentRootPath);
         }
 
         private void OnApplicationStopping()
         {
-            logger.LogInformation("Application is shutting down...");
+            _logger.LogInformation("Application is shutting down...");
         }
 
         private void RegisterShutdownHandlers()
@@ -78,7 +78,7 @@ namespace WpfApp{
 
         private void OnProcessExit(object? sender, EventArgs e)
         {
-            applicationLifetime.StopApplication();
+            _applicationLifetime.StopApplication();
             UnregisterShutdownHandlers();
             applicationStartedRegistration.Dispose();
             applicationStoppingRegistration.Dispose();

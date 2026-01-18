@@ -14,26 +14,26 @@ namespace WpfApp2.Hosting
 {
     public class WpfAppLifetime : IHostLifetime, IDisposable
     {
-        private readonly ILogger<WpfAppLifetime> logger;
-        private readonly IHostApplicationLifetime hostApplicationLifetime;
+        private readonly ILogger<WpfAppLifetime> _logger;
+        private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
         public WpfAppLifetime(ILogger<WpfAppLifetime> logger,
                               IHostApplicationLifetime hostApplicationLifetime)
         {
-            this.logger = logger;
-            this.hostApplicationLifetime = hostApplicationLifetime;
-            logger.LogDebug("Created: {HashCode}", GetHashCode().ToString());
+            _logger = logger;
+            _hostApplicationLifetime = hostApplicationLifetime;
+            _logger.LogDebug("Created: {HashCode}", GetHashCode().ToString());
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            logger.LogDebug("StopAsync: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("StopAsync: {HashCode}", GetHashCode().ToString());
             return Task.CompletedTask;
         }
 
         public Task WaitForStartAsync(CancellationToken cancellationToken)
         {
-            logger.LogDebug("WaitForStartAsync: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("WaitForStartAsync: {HashCode}", GetHashCode().ToString());
             System.Windows.Application.Current.Exit += ApplicationExit;
             return Task.CompletedTask;
         }
@@ -41,12 +41,12 @@ namespace WpfApp2.Hosting
         private void ApplicationExit(object sender, System.Windows.ExitEventArgs e)
         {
             System.Windows.Application.Current.Exit -= ApplicationExit;
-            hostApplicationLifetime.StopApplication();
+            _hostApplicationLifetime.StopApplication();
         }
 
         public void Dispose()
         {
-            logger.LogDebug("Disposed: {HashCode}", GetHashCode().ToString());
+            _logger.LogDebug("Disposed: {HashCode}", GetHashCode().ToString());
         }
     }
 }
