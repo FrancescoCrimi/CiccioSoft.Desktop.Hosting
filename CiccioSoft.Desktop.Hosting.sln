@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp", "WpfApp\WpfApp.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormApp", "FormApp\FormApp.csproj", "{0454553F-35C4-4B90-AAA3-4E3E994BE577}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsApp2", "FormsApp2\FormsApp2.csproj", "{7DCC660F-53E6-40E3-8DD5-E18A2C641AC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp2", "WpfApp2\WpfApp2.csproj", "{A885EF84-1253-45A5-9EF7-755D975156EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{0454553F-35C4-4B90-AAA3-4E3E994BE577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0454553F-35C4-4B90-AAA3-4E3E994BE577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0454553F-35C4-4B90-AAA3-4E3E994BE577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DCC660F-53E6-40E3-8DD5-E18A2C641AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCC660F-53E6-40E3-8DD5-E18A2C641AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DCC660F-53E6-40E3-8DD5-E18A2C641AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC660F-53E6-40E3-8DD5-E18A2C641AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A885EF84-1253-45A5-9EF7-755D975156EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A885EF84-1253-45A5-9EF7-755D975156EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A885EF84-1253-45A5-9EF7-755D975156EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A885EF84-1253-45A5-9EF7-755D975156EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿// Copyright (c) 2023 - 2026 Francesco Crimi
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -43,10 +49,10 @@ namespace FormApp
 
             RegisterShutdownHandlers();
 
-            var threadfrm = new System.Threading.Thread(StartForm);
-            threadfrm.SetApartmentState(System.Threading.ApartmentState.STA);
-            threadfrm.Name = "StartForm Thread";
-            threadfrm.Start();
+            var threadForm = new System.Threading.Thread(StartForm);
+            threadForm.SetApartmentState(System.Threading.ApartmentState.STA);
+            threadForm.Name = "StartForm Thread";
+            threadForm.Start();
 
             return Task.CompletedTask;
         }
