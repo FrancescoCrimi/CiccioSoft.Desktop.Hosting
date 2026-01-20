@@ -6,17 +6,17 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Windows;
+using System.Windows.Forms;
 
-namespace WpfApp2.Hosting
+namespace WinFormsApp2.Hosting
 {
-    public static class WpfHostBuilderExtensions
+    public static class FormHostBuilderExtensions
     {
-        public static HostApplicationBuilder ConfigureWPF<TWindow>(this HostApplicationBuilder builder) where TWindow : Window
+        public static HostApplicationBuilder ConfigureWinForms<TForm>(this HostApplicationBuilder builder) where TForm : Form
         {
             builder.Services
-                .AddSingleton<IHostLifetime, WpfHostLifetime>()
-                .AddHostedService<WpfHostedService<TWindow>>();
+                .AddSingleton<IHostLifetime, FormHostLifetime>()
+                .AddHostedService<FormHostedService<TForm>>();
             return builder;
         }
     }

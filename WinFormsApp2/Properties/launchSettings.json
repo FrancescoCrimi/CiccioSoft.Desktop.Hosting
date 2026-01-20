@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "WinFormsApp2": {
+      "commandName": "Project"
+    },
+    "WinFormsApp2-Dev": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

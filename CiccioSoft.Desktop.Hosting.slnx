@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="FormApp/FormApp.csproj" />
-  <Project Path="FormsApp2/FormsApp2.csproj" />
-  <Project Path="WpfApp/WpfApp.csproj" />
+  <Project Path="WinFormsApp1/WinFormsApp1.csproj" />
+  <Project Path="WinFormsApp2/WinFormsApp2.csproj" />
+  <Project Path="WpfApp1/WpfApp1.csproj" />
   <Project Path="WpfApp2/WpfApp2.csproj" />
 </Solution>

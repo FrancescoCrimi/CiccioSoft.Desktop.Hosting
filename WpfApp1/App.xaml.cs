@@ -6,21 +6,25 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Windows;
-using WpfApp2.Hosting;
 
-namespace WpfApp2
+namespace WpfApp1
 {
     public partial class App : Application
     {
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             HostApplicationBuilder builder = Host.CreateApplicationBuilder(e.Args);
-            builder.ConfigureWPF<Window1>();
-            builder.Services.AddTransient<Window1>();
+            builder.Services
+                .AddSingleton<IHostLifetime, WpfHostLifetime>()
+                .AddTransient<Window1>();
 
             IHost host = builder.Build();
-            await host.RunAsync();
+            await host.StartAsync();
+
+            var shell = host.Services.GetRequiredService<Window1>();
+            shell.Show();
         }
     }
 }
